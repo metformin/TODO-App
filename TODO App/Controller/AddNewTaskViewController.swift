@@ -80,6 +80,7 @@ class AddNewTaskViewController: UIViewController {
         configureTaskDetailsUI()
     }
     
+    //MARK: - UI Helper Functions
     private func configureButtonsUI(){
         view.addSubview(backButton)
         backButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 10, paddingRight: 10,height: 50)

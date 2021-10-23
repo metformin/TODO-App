@@ -21,7 +21,7 @@ final class CoreDataService: NSObject{
         return appDelegate.persistentContainer.viewContext
     }
     
-    public func saveData(taskTitle: String, taskAddedDate: Date, taskFinishDate: Date, taskCategory: Category, completion: @escaping(Error?) -> Void)  {
+    public func saveData(task: TaskModel, completion: @escaping(Error?) -> Void)  {
         let context = getContest()
         let entity = NSEntityDescription.entity(forEntityName: "Task", in: context)
         
@@ -31,10 +31,10 @@ final class CoreDataService: NSObject{
         }
         
         let newTask = NSManagedObject(entity: entity, insertInto: context)
-        newTask.setValue(taskTitle, forKey: "title")
-        newTask.setValue(taskAddedDate, forKey: "addedDate")
-        newTask.setValue(taskFinishDate, forKey: "finishDate")
-        newTask.setValue(taskCategory.rawValue, forKey: "category")
+        newTask.setValue(task.title, forKey: "title")
+        newTask.setValue(task.addedDate, forKey: "addedDate")
+        newTask.setValue(task.finishDate, forKey: "finishDate")
+        newTask.setValue(task.category.rawValue, forKey: "category")
         
         do {
             try context.save()
@@ -46,15 +46,15 @@ final class CoreDataService: NSObject{
         }
     }
     
-    func fetchTask() -> [Task]?{
+    func fetchTasks() -> [Task]?{
         let context = getContest()
         var tasks: [Task]? =  nil
-         let fetchRequestParcel = NSFetchRequest<Task>(entityName: "Task")
+        let fetchRequestParcel = NSFetchRequest<Task>(entityName: "Task")
 
         do {
             tasks = try context.fetch(fetchRequestParcel)
             print("DEBUG: Data fetched from DB")
-            return tasks
+            return tasks?.reversed()
         } catch {
             return nil
         }

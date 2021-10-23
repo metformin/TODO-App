@@ -61,18 +61,9 @@ class AddNewTaskViewController: UIViewController {
         return textFiled
     }()
     
-    private let taskCategoryPicker: UIPickerView = {
-       let pickerView = UIPickerView()
-        return pickerView
-    }()
-    
-    private let taskFinishDatePicker: UIDatePicker = {
-       let datePicker = UIDatePicker()
+    private let taskCategoryPicker: UIPickerView = UIPickerView()
+    private let taskFinishDatePicker: UIDatePicker = UIDatePicker()
 
-        return datePicker
-    }()
-    
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,9 +117,9 @@ class AddNewTaskViewController: UIViewController {
         print(Category.allCases[taskCategoryPicker.selectedRow(inComponent: 0)])
     }
     
-    @objc func handlerShowNewTaskSavedAlert(){
-        //delegate?.showNewTaskSavedAlert()
-    }
+//    @objc func handlerShowNewTaskSavedAlert(){
+//        //delegate?.showNewTaskSavedAlert()
+//    }
 
     //MARK: - CoreData
    private func saveNewTaskToDB(){
@@ -137,12 +128,15 @@ class AddNewTaskViewController: UIViewController {
            self.noTitleTextErrorAlert()
            return
        }
-        let category = Category.allCases[taskCategoryPicker.selectedRow(inComponent: 0)]
+       
+       let category = Category.init(rawValue: taskCategoryPicker.selectedRow(inComponent: 0))
+       guard let category = category else {
+           return
+       }
+
+       let task = TaskModel(title: title, addedDate: Date(), finishDate: taskFinishDatePicker.date, category: category)
         
-        CoreDataService.shared.saveData(taskTitle: title,
-                                        taskAddedDate: Date(),
-                                        taskFinishDate: taskFinishDatePicker.date,
-                                        taskCategory: category) { err in
+       CoreDataService.shared.saveData(task: task) { err in
             if err != nil {
                 print("Error saving data")
                 self.savingErrorAlert()
@@ -155,7 +149,7 @@ class AddNewTaskViewController: UIViewController {
     }
     
     //MARK: - Alerts
-    func savingErrorAlert(){
+    private func savingErrorAlert(){
         let alert = UIAlertController(title: "Bład podczas zapisu", message: "Wystąpił błąd podczas dodawania zadania do bazy danych.", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "Spróbuj ponownie", style: .default, handler: { _ in
@@ -168,7 +162,7 @@ class AddNewTaskViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    func noTitleTextErrorAlert(){
+    private func noTitleTextErrorAlert(){
         let alert = UIAlertController(title: "Uzupełnij nazwe zadania", message: "Nazwa zadania musi zawierać chociaż 1 znak a maksymalnie 40 znaków", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -189,7 +183,9 @@ extension AddNewTaskViewController: UIPickerViewDataSource, UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         let pickerLabel = UILabel()
         pickerLabel.textColor = UIColor.white
-        pickerLabel.text = Category.allCases[row].rawValue
+        if let categoryName: String = Category(rawValue: row)?.description {
+            pickerLabel.text = categoryName
+        }
         pickerLabel.font = UIFont(name: "Arial-BoldMT", size: 15)
         pickerLabel.textAlignment = .center
         return pickerLabel

@@ -21,8 +21,23 @@ public struct TaskModel {
     }
 }
 
-public enum Category: String, CaseIterable {
-    case other = "Inne"
-    case work = "Praca"
-    case shopping = "Zakupy"
+protocol CategoryString  {
+      var description: String { get }
+}
+
+public enum Category: Int, CaseIterable, CategoryString {
+    case other
+    case work
+    case shopping
+    
+    var description: String {
+        switch self {
+        case .other:
+            return "Inne"
+        case .work:
+            return "Praca"
+        case .shopping:
+            return "Zakupy"
+        }
+    }
 }

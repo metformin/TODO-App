@@ -9,12 +9,14 @@ import UIKit
 
 class TaskDetailsViewContainer: UIView {
     
+    //MARK: - Properties
     private let title: String
     private let bgColor: UIColor
     private let textField: UITextField?
     private let dataPickerView: UIDatePicker?
     private let pickerView: UIPickerView?
 
+    //MARK: - Lifecicle
     init(title: String, bgColor: UIColor, textField: UITextField? = nil, dataPickerView: UIDatePicker? = nil, pickerView: UIPickerView? = nil) {
         self.title = title
         self.bgColor = bgColor
@@ -30,15 +32,18 @@ class TaskDetailsViewContainer: UIView {
     }
     
     func configureUI(){
+        backgroundColor = bgColor.withAlphaComponent(0.3)
+        layer.cornerRadius = 20
+        
         let sectionTitle = UILabel()
         sectionTitle.text = title
         sectionTitle.font = UIFont(name: "Futura", size: 17)
         sectionTitle.textColor = .white
+
         addSubview(sectionTitle)
-        sectionTitle.anchor(top: self.topAnchor, left: self.leftAnchor, paddingTop: 15, paddingLeft: 15)
-        backgroundColor = bgColor.withAlphaComponent(0.3)
-        layer.cornerRadius = 20
-        
+        sectionTitle.anchor(top: self.topAnchor, left: self.leftAnchor,
+                            paddingTop: 15, paddingLeft: 15)
+    
         if let textField = textField {
             textField.font = UIFont(name: "Futura", size: 17)
             textField.textColor = .white
@@ -47,7 +52,8 @@ class TaskDetailsViewContainer: UIView {
             textField.layer.cornerRadius = 10
             
             addSubview(textField)
-            textField.anchor(left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingLeft: 20, paddingBottom: 20, paddingRight: 20, height: 40)
+            textField.anchor(left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor,
+                             paddingLeft: 20, paddingBottom: 20, paddingRight: 20, height: 40)
         }
         
         if let dataPickerView = dataPickerView {
@@ -60,14 +66,15 @@ class TaskDetailsViewContainer: UIView {
             dataPickerView.tintColor = .white
         
             addSubview(dataPickerView)
-            dataPickerView.anchor(top: sectionTitle.bottomAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: 10, paddingRight: 20)
+            dataPickerView.anchor(top: sectionTitle.bottomAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor,
+                                  paddingTop: 10, paddingLeft: 20, paddingBottom: 10, paddingRight: 20)
         }
         
         if let pickerView = pickerView {
             pickerView.layer.cornerRadius = 10
-            
             addSubview(pickerView)
-            pickerView.anchor(top: sectionTitle.bottomAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: 10, paddingRight: 20)
+            pickerView.anchor(top: sectionTitle.bottomAnchor, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor,
+                              paddingTop: 10, paddingLeft: 20, paddingBottom: 10, paddingRight: 20)
         }
     }
 }

@@ -11,16 +11,20 @@ class HomeViewController: UIViewController {
     
     // MARK: - Properties
     private var addNewTaskViewController: AddNewTaskViewController?
+    private lazy var newTaskSavedAlert: UIView = NewTaskSavedAlert()
+
     private lazy var taskTable: UITableView = {
         let table = UITableView()
         table.backgroundColor = .clear
         return table
     }()
+    
     private var tasks: [Task] = [] {
         didSet{
             taskTable.reloadData()
         }
     }
+    
     private var addNewTaskButton: AddNewTaskButton = {
         let button = AddNewTaskButton(type: .system)
         button.addTarget(self, action: #selector(handleShowAddNewTask), for: .touchUpInside)
@@ -29,11 +33,6 @@ class HomeViewController: UIViewController {
         return button
     }()
     
-    private lazy var newTaskSavedAlert: UIView = {
-       let alert = NewTaskSavedAlert()
-        
-        return alert
-    }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -51,7 +50,7 @@ class HomeViewController: UIViewController {
     }
     
     //MARK: - Alerts
-    func deleteTaskAlert(task: Task, completion: @escaping () -> Void){
+    private func deleteTaskAlert(task: Task, completion: @escaping () -> Void){
         let alert = UIAlertController(title: "Usuwanie", message: "Czy napewno chcesz usunąć wybrane zadanie?", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "Usuń", style: .destructive, handler: { _ in
@@ -74,7 +73,7 @@ class HomeViewController: UIViewController {
     }
     
     func fetchTaskAndReloadTable(){
-        if let tasks = CoreDataService.shared.fetchTask() {
+        if let tasks = CoreDataService.shared.fetchTasks() {
             self.tasks = tasks
         }
     }

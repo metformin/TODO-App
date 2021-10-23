@@ -68,17 +68,4 @@ extension UIView{
         heightAnchor.constraint(equalToConstant: height).isActive = true
         widthAnchor.constraint(equalToConstant: width).isActive = true
     }
-    
-    func setGradientBackground(view: UIView) {
-        let colorTop =  UIColor(hexString: "#EFF54D").cgColor
-        let colorBottom = UIColor(hexString: "#00AC61").cgColor
-        
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [colorTop, colorBottom]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = view.bounds
-                
-        view.layer.insertSublayer(gradientLayer, at:0)
-    }
-    
 }

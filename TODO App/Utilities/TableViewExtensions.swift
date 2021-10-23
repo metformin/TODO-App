@@ -9,7 +9,7 @@ import UIKit
 
 extension UITableView {
     func setNoDataPlaceholder(title: String, subtitle: String) {
-        lazy var titleLabel: UILabel = {
+        let titleLabel: UILabel = {
             let titleLabel = UILabel()
             titleLabel.font = UIFont(name: "Futura-Medium", size: 30)
             titleLabel.textColor = .darkGray
@@ -20,7 +20,7 @@ extension UITableView {
             return titleLabel
         }()
         
-        lazy var subtitleLabel: UILabel = {
+        let subtitleLabel: UILabel = {
             let subtitleLabel = UILabel()
             subtitleLabel.font = UIFont(name: "Futura", size: 15)
             subtitleLabel.textColor = .lightGray
@@ -31,7 +31,7 @@ extension UITableView {
             return subtitleLabel
         }()
         
-        lazy var contentView = UIView()
+        let contentView = UIView()
         
         self.backgroundView?.addSubview(contentView)
         contentView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)

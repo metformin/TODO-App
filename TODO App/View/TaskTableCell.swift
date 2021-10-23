@@ -12,26 +12,10 @@ class TaskTableCell: UITableViewCell {
     //MARK: - Properties
     var task: Task? {
         didSet{
-            titleLabel.text = task?.title
-            guard let date = task?.finishDate else { return }
-            dateLabel.text = dateToString(date: date)
-            timeLabel.text = timeToString(date: date)
-            
-            switch task?.category {
-            case "Inne":
-                categoryImage.image = UIImage(named: "otherTaskImage")?.withRenderingMode(.alwaysTemplate)
-                break
-            case "Praca":
-                categoryImage.image = UIImage(named: "workTaskImage")?.withRenderingMode(.alwaysTemplate)
-                break
-            case "Zakupy":
-                categoryImage.image = UIImage(named: "shoppingTaskImage")?.withRenderingMode(.alwaysTemplate)
-                break
-            default:
-                break
-            }
+            setCustomView()
         }
     }
+    private let categoryContent: UIView = UIView()
     private let contentCell: UIView = {
         let contentCell = UIView()
         contentCell.backgroundColor = .appLightGrey
@@ -39,12 +23,7 @@ class TaskTableCell: UITableViewCell {
         contentCell.clipsToBounds = true
         return contentCell
     }()
-    private let categoryContent: UIView = {
-        let categoryContent = UIView()
-        categoryContent.backgroundColor = .appGreen
-        return categoryContent
-    }()
-    var titleLabel: UILabel = {
+    private var titleLabel: UILabel = {
         let title = UILabel()
         title.font = UIFont(name: "Futura-Medium", size: 17)
         title.numberOfLines = 2
@@ -54,14 +33,14 @@ class TaskTableCell: UITableViewCell {
         title.textColor = .darkGray
         return title
     }()
-    var dateImage: UIImageView = {
+    private var dateImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "dateImage")?.withRenderingMode(.alwaysTemplate)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .darkGray
         return imageView
     }()
-    var dateLabel: UILabel = {
+    private var dateLabel: UILabel = {
         let dateLabel = UILabel()
         dateLabel.font = UIFont(name: "Futura", size: 15)
         dateLabel.text = "Data"
@@ -69,14 +48,14 @@ class TaskTableCell: UITableViewCell {
         dateLabel.textColor = .darkGray
         return dateLabel
     }()
-    var timeImage: UIImageView = {
+    private var timeImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "timeImage")?.withRenderingMode(.alwaysTemplate)
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .darkGray
         return imageView
     }()
-    var timeLabel: UILabel = {
+    private var timeLabel: UILabel = {
         let timeLabel = UILabel()
         timeLabel.font = UIFont(name: "Futura", size: 15)
         timeLabel.text = "Time"
@@ -84,7 +63,7 @@ class TaskTableCell: UITableViewCell {
         timeLabel.textColor = .darkGray
         return timeLabel
     }()
-    var categoryImage: UIImageView = {
+    private var categoryImage: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
         image.tintColor = .white
@@ -142,6 +121,31 @@ class TaskTableCell: UITableViewCell {
         contentCell.addSubview(titleLabel)
         titleLabel.anchor(top: dateImage.bottomAnchor, left: categoryContent.rightAnchor, bottom: categoryContent.bottomAnchor ,right: contentCell.rightAnchor , paddingTop: 7, paddingLeft: 10, paddingBottom: 3 , paddingRight: 10)
     }
+    func setCustomView(){
+        titleLabel.text = task?.title
+        guard let date = task?.finishDate else { return }
+        dateLabel.text = dateToString(date: date)
+        timeLabel.text = timeToString(date: date)
+        
+        switch task?.category {
+        case 0:
+            categoryImage.image = UIImage(named: "otherTaskImage")?.withRenderingMode(.alwaysTemplate)
+            categoryContent.backgroundColor = .purple
+            break
+        case 1:
+            categoryImage.image = UIImage(named: "workTaskImage")?.withRenderingMode(.alwaysTemplate)
+            categoryContent.backgroundColor = .appGreen
+            break
+        case 2:
+            categoryImage.image = UIImage(named: "shoppingTaskImage")?.withRenderingMode(.alwaysTemplate)
+            categoryContent.backgroundColor = .brown
+            break
+        default:
+            break
+        }
+    }
+    
+    //MARK: - Date formatters
     func dateToString(date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd MMM, yyyy"

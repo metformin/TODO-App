@@ -79,6 +79,10 @@ class AddNewTaskViewController: UIViewController {
         configureButtonsUI()
         configureTaskDetailsUI()
     }
+    deinit{
+        print("Add new task view controller end")
+    }
+    
     
     //MARK: - UI Helper Functions
     private func configureButtonsUI(){

@@ -12,9 +12,10 @@ enum CoreDataError: Error{
     case savingError
 }
 
-final class CoreDataService: NSObject{
+final class CoreDataService{
     
     static let shared = CoreDataService()
+    
     
     private func getContest() -> NSManagedObjectContext{
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

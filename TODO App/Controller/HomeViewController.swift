@@ -54,7 +54,7 @@ class HomeViewController: UIViewController {
         let alert = UIAlertController(title: "Usuwanie", message: "Czy napewno chcesz usunąć wybrane zadanie?", preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: "Usuń", style: .destructive, handler: { _ in
-            CoreDataService.shared.deleteSpecyficTask(task: task) {
+            CoreDataService.shared.deleteSpecyficTask(task: task) {[unowned self] in
                 self.fetchTaskAndReloadTable()
                 completion()
             }
@@ -73,9 +73,10 @@ class HomeViewController: UIViewController {
     }
     
     func fetchTaskAndReloadTable(){
-        if let tasks = CoreDataService.shared.fetchTasks() {
+        if let tasks =  CoreDataService.shared.fetchTasks()  {
             self.tasks = tasks
         }
+
     }
     
     // MARK: - Selectors
